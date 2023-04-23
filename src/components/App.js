@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Question from "./Question";
 import quiz from "../data/quiz";
 
@@ -7,6 +7,7 @@ function App() {
   const [currentQuestionId, setCurrentQuestion] = useState(1);
   const [score, setScore] = useState(0);
   const currentQuestion = questions.find((q) => q.id === currentQuestionId);
+
 
   function handleQuestionAnswered(correct) {
     if (currentQuestionId < questions.length) {
@@ -18,6 +19,34 @@ function App() {
       setScore((score) => score + 1);
     }
   }
+
+  // const  [count]=useState(0);
+  //  useEffect(()=>{
+  //         setTimeout(() => {
+  //           function setTimeRemaining
+  //         },[]);
+  //  })
+  const Question = ({ question, onAnswered }) => {
+  const [timeRemaining, setTimeRemaining] = useState(10);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setTimeRemaining(timeRemaining - 1);
+    }, 1000);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [timeRemaining]);
+
+  useEffect(() => {
+    if (timeRemaining === 0) {
+      setTimeRemaining(10);
+      onAnswered(false);
+    }
+  }, [timeRemaining, onAnswered]);};
+
+  
 
   return (
     <main>
